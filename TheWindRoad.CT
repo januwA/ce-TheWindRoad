@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="31">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>1</ID>
+      <Description>"hp base写"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{
+ 被攻击时
+}
+[ENABLE]
+{$lua}
+  if syntaxcheck then return end
+  _checkMonoMethod('PlayerHealth', 'OnTriggerEnter')
+{$asm}
+
+
+aobscan(sdad_INJECT,89 87 DC 01 00 00 48 63 87 70)
+alloc(newmem,$1000,sdad_INJECT)
+alloc(pHp,$8)
+
+label(return)
+
+newmem:
+  mov [pHp],rdi
+  mov eax,[rdi+1d8]
+  mov [rdi+000001DC],eax
+  jmp return
+
+sdad_INJECT:
+  jmp newmem
+  nop
+return:
+pHp:
+  dq 0
+
+registersymbol(sdad_INJECT pHp)
+
+[DISABLE]
+{$lua}
+  if syntaxcheck then return end
+  _checkMonoMethod('PlayerHealth', 'OnTriggerEnter')
+{$asm}
+
+sdad_INJECT:
+  db 89 87 DC 01 00 00
+
+unregistersymbol(sdad_INJECT pHp)
+dealloc(newmem)
+dealloc(pHp)
+
+{
+// ORIGINAL CODE - INJECTION POINT: 1F70E9D2AD0
+
+1F70E9D2A9D: 41 FF D3                       -  call r11
+1F70E9D2AA0: 48 8B C8                       -  mov rcx,rax
+1F70E9D2AA3: 83 39 00                       -  cmp dword ptr [rcx],00
+1F70E9D2AA6: 49 BA 40 79 94 8D F7 01 00 00  -  mov r10,000001F78D947940
+1F70E9D2AB0: 49 BB 00 3C 27 12 F7 01 00 00  -  mov r11,000001F712273C00
+1F70E9D2ABA: 41 FF D3                       -  call r11
+1F70E9D2ABD: 48 8B C8                       -  mov rcx,rax
+1F70E9D2AC0: 48 8B 85 70 F5 FF FF           -  mov rax,[rbp-00000A90]
+1F70E9D2AC7: 48 63 89 84 00 00 00           -  movsxd  rcx,dword ptr [rcx+00000084]
+1F70E9D2ACE: 2B C1                          -  sub eax,ecx
+// ---------- INJECTING HERE ----------
+1F70E9D2AD0: 89 87 DC 01 00 00              -  mov [rdi+000001DC],eax
+// ---------- DONE INJECTING  ----------
+1F70E9D2AD6: 48 63 87 70 01 00 00           -  movsxd  rax,dword ptr [rdi+00000170]
+1F70E9D2ADD: 83 F8 05                       -  cmp eax,05
+1F70E9D2AE0: 0F 85 D2 05 00 00              -  jne 1F70E9D30B8
+1F70E9D2AE6: 48 8B 47 50                    -  mov rax,[rdi+50]
+1F70E9D2AEA: 48 63 80 BC 00 00 00           -  movsxd  rax,dword ptr [rax+000000BC]
+1F70E9D2AF1: 83 F8 08                       -  cmp eax,08
+1F70E9D2AF4: 0F 85 BE 05 00 00              -  jne 1F70E9D30B8
+1F70E9D2AFA: 48 8B CE                       -  mov rcx,rsi
+1F70E9D2AFD: 83 3E 00                       -  cmp dword ptr [rsi],00
+1F70E9D2B00: 49 BB E4 15 A1 03 F7 01 00 00  -  mov r11,000001F703A115E4
+}
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>2</ID>
+          <Description>"hp"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>[pHp]+1dc</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>6</ID>
+          <Description>"真气"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>[pHp]+1dc+c</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>7</ID>
+          <Description>"f 破防"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>[pHp]+1dc+34</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>8</ID>
+          <Description>"体力"</Description>
+          <VariableType>Float</VariableType>
+          <Address>[pHp]+1dc+1c</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>10</ID>
+      <Description>"一刀秒"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{ EnemyHealth:CollisionGetHurt+4a3
+
+}
+
+[ENABLE]
+{$lua}
+  if syntaxcheck then return end
+  _checkMonoMethod('EnemyHealth', 'CollisionGetHurt')
+{$asm}
+
+aobscan(dgssfs_INJECT,89 87 B8 01 00 00 48 8B CF)
+alloc(newmem,$1000,dgssfs_INJECT)
+
+label(code)
+label(return)
+
+newmem:
+  mov eax,0
+code:
+  mov [rdi+000001B8],eax
+  jmp return
+
+dgssfs_INJECT:
+  jmp newmem
+  nop
+return:
+registersymbol(dgssfs_INJECT)
+
+[DISABLE]
+{$lua}
+  if syntaxcheck then return end
+  _checkMonoMethod('EnemyHealth', 'CollisionGetHurt')
+{$asm}
+dgssfs_INJECT:
+  db 89 87 B8 01 00 00
+
+unregistersymbol(dgssfs_INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: 14D1493B203
+
+14D1493B1D0: 41 FF D3                       -  call r11
+14D1493B1D3: 48 8B C8                       -  mov rcx,rax
+14D1493B1D6: 83 39 00                       -  cmp dword ptr [rcx],00
+14D1493B1D9: 49 BA B0 23 9B 88 4D 01 00 00  -  mov r10,0000014D889B23B0
+14D1493B1E3: 49 BB 50 EA 92 14 4D 01 00 00  -  mov r11,0000014D1492EA50
+14D1493B1ED: 41 FF D3                       -  call r11
+14D1493B1F0: 48 8B C8                       -  mov rcx,rax
+14D1493B1F3: 48 8B 85 48 FD FF FF           -  mov rax,[rbp-000002B8]
+14D1493B1FA: 48 63 89 CC 00 00 00           -  movsxd  rcx,dword ptr [rcx+000000CC]
+14D1493B201: 2B C1                          -  sub eax,ecx
+// ---------- INJECTING HERE ----------
+14D1493B203: 89 87 B8 01 00 00              -  mov [rdi+000001B8],eax
+// ---------- DONE INJECTING  ----------
+14D1493B209: 48 8B CF                       -  mov rcx,rdi
+14D1493B20C: 49 BB 40 DC 34 60 4D 01 00 00  -  mov r11,0000014D6034DC40
+14D1493B216: 41 FF D3                       -  call r11
+14D1493B219: 48 8B 57 68                    -  mov rdx,[rdi+68]
+14D1493B21D: 48 8B C8                       -  mov rcx,rax
+14D1493B220: 83 38 00                       -  cmp dword ptr [rax],00
+14D1493B223: 49 BB 20 44 92 14 4D 01 00 00  -  mov r11,0000014D14924420
+14D1493B22D: 41 FF D3                       -  call r11
+14D1493B230: 48 8B CF                       -  mov rcx,rdi
+14D1493B233: 49 BB 40 DC 34 60 4D 01 00 00  -  mov r11,0000014D6034DC40
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>12</ID>
+      <Description>"金币 base"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{ PlayerManualScroll:ShowPlayerManual+6bf
+}
+
+[ENABLE]
+{$lua}
+  if syntaxcheck then return end
+  _checkMonoMethod('PlayerManualScroll', 'ShowPlayerManual')
+{$asm}
+
+aobscan(fgdgr_INJECT,41 FF D3 4C 8B C0 48 8B 85 28 FE)
+alloc(newmem,$1000,fgdgr_INJECT)
+
+label(code)
+label(return)
+label(iGold)
+
+newmem:
+
+code:
+  push rax
+  mov rax,[iGold]
+  mov [rcx],rax
+  pop rax
+
+  call r11
+  mov r8,rax
+  jmp return
+
+iGold:
+  dd #9999
+
+fgdgr_INJECT:
+  jmp newmem
+  nop
+return:
+
+registersymbol(fgdgr_INJECT iGold)
+
+[DISABLE]
+{$lua}
+  if syntaxcheck then return end
+  _checkMonoMethod('PlayerManualScroll', 'ShowPlayerManual')
+{$asm}
+
+fgdgr_INJECT:
+  db 41 FF D3 4C 8B C0
+
+unregistersymbol(fgdgr_INJECT iGold)
+dealloc(newmem)
+dealloc(iGold)
+
+{
+// ORIGINAL CODE - INJECTION POINT: 1F8004A708F
+
+1F8004A704B: 48 8B C8                       -  mov rcx,rax
+1F8004A704E: BA 14 00 00 00                 -  mov edx,00000014
+1F8004A7053: 49 B8 80 41 98 9A F8 01 00 00  -  mov r8,000001F89A984180
+1F8004A705D: 48 8B 00                       -  mov rax,[rax]
+1F8004A7060: FF 90 00 01 00 00              -  call qword ptr [rax+00000100]
+1F8004A7066: 48 8B 85 20 FE FF FF           -  mov rax,[rbp-000001E0]
+1F8004A706D: 48 89 85 28 FE FF FF           -  mov [rbp-000001D8],rax
+1F8004A7074: 48 89 85 30 FE FF FF           -  mov [rbp-000001D0],rax
+1F8004A707B: 48 B9 38 5C BD 8F F8 01 00 00  -  mov rcx,000001F88FBD5C38
+1F8004A7085: 49 BB 30 E1 C9 0A F8 01 00 00  -  mov r11,000001F80AC9E130
+// ---------- INJECTING HERE ----------
+1F8004A708F: 41 FF D3                       -  call r11
+1F8004A7092: 4C 8B C0                       -  mov r8,rax
+// ---------- DONE INJECTING  ----------
+1F8004A7095: 48 8B 85 28 FE FF FF           -  mov rax,[rbp-000001D8]
+1F8004A709C: 48 8B C8                       -  mov rcx,rax
+1F8004A709F: BA 15 00 00 00                 -  mov edx,00000015
+1F8004A70A4: 48 8B 00                       -  mov rax,[rax]
+1F8004A70A7: FF 90 00 01 00 00              -  call qword ptr [rax+00000100]
+1F8004A70AD: 48 8B 85 30 FE FF FF           -  mov rax,[rbp-000001D0]
+1F8004A70B4: 48 8B C8                       -  mov rcx,rax
+1F8004A70B7: 48 89 8D 38 FE FF FF           -  mov [rbp-000001C8],rcx
+1F8004A70BE: 48 8B C8                       -  mov rcx,rax
+1F8004A70C1: BA 16 00 00 00                 -  mov edx,00000016
+}
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>13</ID>
+          <Description>"设置金币"</Description>
+          <LastState Value="9999" RealAddress="1C4FFFF001A"/>
+          <VariableType>4 Bytes</VariableType>
+          <Address>iGold</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <Comments>// 
+InventoryItemGrid:Buy+8a0 - 89 08                 - mov [rax],ecx
+InventoryItemGrid:Buy+8a2 - 48 63 86 F4000000     - movsxd  rax,dword ptr [rsi+000000F4]
+InventoryItemGrid:Buy+8a9 - FF C8                 - dec eax
+InventoryItemGrid:Buy+8ab - 89 86 F4000000        - mov [rsi+000000F4],eax
+InventoryItemGrid:Buy+8b1 - 49 BA 88432D5A5D020000 - mov r10,0000025D5A2D4388 { (25CC4B35DD0) }
+</Comments>
+  <LuaScript>-- 检查是否启用mono，启动后JIT编译指定的函数
+function _checkMonoMethod(cName, mName)
+
+  -- 检查参数
+  if cName == nil and mName == nil then return end
+
+  -- 检查是否附加进程
+  -- showMessage(process)
+  if process == nil and readInteger(process) == 0 then
+    local msg = 'No process detected.'
+    print(msg)
+    error(msg)
+    return
+  end
+
+  -- 激活Mono
+  mono_initialize()
+
+  -- Jit编译
+  if LaunchMonoDataCollector() ~= 0 then
+    local mId = mono_findMethod('Assembly-CSharp', cName, mName)
+    mono_compile_method(mId)
+  end
+end
+</LuaScript>
+</CheatTable>
